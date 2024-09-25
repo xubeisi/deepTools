@@ -20,24 +20,15 @@ jobs:
       matrix:
         chunk: [1, 2, 3]
     steps:
-    - uses: actions/checkout@v3
-    - uses: conda-incubator/setup-miniconda@v2
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
-        miniconda-version: "latest"
-        auto-activate-base: true
-    - name: setup env
-      run: |
-        conda env list
-        conda install -n base conda-libmamba-solver
-        conda config --set solver libmamba
-        conda env create -f .github/test_and_build.yml -n test_and_build
+        python-version: '3.12'
     - name: pip install
       run: |
-        conda activate test_and_build
         pip install .
     - name: planemo
       run: |
-        conda activate test_and_build
         ./.planemo.sh ${{ matrix.chunk }} ${{ env.GALAXY_BRANCH }}
     - uses: actions/upload-artifact@v3
       with:
@@ -54,7 +45,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         path: artifacts
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Cache .cache/pip
@@ -69,7 +60,7 @@ jobs:
       with:
         mode: combine
         html-report: true
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: 'All tool test results'
         path: upload
