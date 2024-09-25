@@ -26,7 +26,7 @@ jobs:
         python-version: '3.12'
     - name: pip install
       run: |
-        pip install .
+        pip install .[actions]
     - name: planemo
       run: |
         ./.planemo.sh ${{ matrix.chunk }} ${{ env.GALAXY_BRANCH }}
