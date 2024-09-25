@@ -24,7 +24,7 @@ jobs:
         python-version: "3.12"
     - name: get samtools
       run: |
-        conda install -c bioconda samtools
+        conda install -c conda-forge -c bioconda samtools
     - name: pip install
       run: |
         pip install .[actions]
