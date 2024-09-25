@@ -43,7 +43,7 @@ actions = [
     "flake8",
     "pytest",
     "twine",
-    "build"
+    "build",
     "planemo"
 ]
 [project.urls]
