@@ -8,10 +8,6 @@ defaults:
   run:
     shell: bash -l {0}
 
-# setup micromamba doesn't work as galaxy setup by planemo requires conda.
-# installing conda over into micromamba built env screws up the PATH
-# setup-miniconda + changing over to libmamba to solve is the easiest workaround
-
 jobs:
   planemo_test:
     name: Planemo test
@@ -21,16 +17,21 @@ jobs:
         chunk: [1, 2, 3]
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: '3.12'
+        miniconda-version: "latest"
+        auto-activate-base: true
+        python-version: "3.12"
+    - name: get samtools
+      run: |
+        conda install -c bioconda samtools
     - name: pip install
       run: |
         pip install .[actions]
     - name: planemo
       run: |
         ./.planemo.sh ${{ matrix.chunk }} ${{ env.GALAXY_BRANCH }}
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: 'Tool test output ${{ matrix.chunk }}'
         path: upload
@@ -38,22 +39,22 @@ jobs:
     name: Combine chunked test results
     needs: planemo_test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.8', '3.11']
+    # strategy:
+    #   matrix:
+    #     python-version: ['3.8', '3.11']
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         path: artifacts
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Cache .cache/pip
-      uses: actions/cache@v3
-      id: cache-pip
-      with:
-        path: ~/.cache/pip
-        key: pip_cache_py_${{ matrix.python-version }}_gxy_${{ env.GALAXY_BRANCH }}
+    # - uses: actions/setup-python@v5
+    #   with:
+    #     python-version: ${{ matrix.python-version }}
+    # - name: Cache .cache/pip
+    #   uses: actions/cache@v3
+    #   id: cache-pip
+    #   with:
+    #     path: ~/.cache/pip
+    #     key: pip_cache_py_${{ matrix.python-version }}_gxy_${{ env.GALAXY_BRANCH }}
     - name: Combine outputs
       uses: galaxyproject/planemo-ci-action@v1
       id: combine
