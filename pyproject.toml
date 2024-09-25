@@ -38,7 +38,14 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Bio-Informatics"
 ]
 readme = "README.rst"
-
+[project.optional-dependencies]
+actions = [
+    "flake8",
+    "pytest",
+    "twine",
+    "build"
+    "planemo"
+]
 [project.urls]
 homepage = "https://pypi.python.org/pypi/deepTools/"
 documentation = "https://deeptools.readthedocs.io/en/latest/"
