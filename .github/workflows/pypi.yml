@@ -15,15 +15,14 @@ jobs:
     name: upload to pypi
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: mamba-org/setup-micromamba@main
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
-        environment-file: .github/test_and_build.yml
-        cache-downloads: true
-        environment-name: test_and_build
+        python-version: '3.12'
+        cache: 'pip'
     - name: build
       run: |
-        micromamba activate test_and_build
+        pip install .[actions]
         rm -f dist/*
         python -m build
     - name: upload
@@ -31,5 +30,4 @@ jobs:
         TWINE_USERNAME: "__token__"
         TWINE_PASSWORD: ${{ secrets.pypi_password }}
       run: |
-        micromamba activate test_and_build
         twine upload dist/*
