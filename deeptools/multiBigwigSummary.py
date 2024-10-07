@@ -41,7 +41,7 @@ A detailed sub-commands help is available by typing:
             conflict_handler='resolve')
 
     parser.add_argument('--version', action='version',
-                        version='multiBigwigSummary {}'.format(version('deeptools')))
+                        version='%(prog)s {}'.format(version('deeptools')))
     subparsers = parser.add_subparsers(
         title="commands",
         dest='command',

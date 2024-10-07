@@ -50,7 +50,7 @@ detailed usage help:
                   'help: plotCoverage -h / plotCoverage --help\n')
 
     parser.add_argument('--version', action='version',
-                        version='plotCoverage {}'.format(version('deeptools')))
+                        version='%(prog)s {}'.format(version('deeptools')))
 
     return parser
 
