@@ -55,8 +55,7 @@ def parse_arguments(args=None):
 
 def getType(fname):
     """
-    Tries to determine if a file is a wiggle file a bigWig file.
-    Returns 'wiggle' if the file name ends with .wig, otherwise 'bigwig'
+    Tries to determine if a file is a wiggle, a bedgraph, or a bigWig file.
     """
     if fname.endswith(".wig") or fname.endswith(".wiggle"):
         return "wiggle"

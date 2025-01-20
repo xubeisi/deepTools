@@ -14,7 +14,14 @@ The recommended way to install deepTools (including its requirements) is via `mi
 
 .. code:: bash
 
-    $ conda install -c bioconda deeptools
+    $ conda install -c conda-forge -c bioconda deeptools
+
+Note that for ARM architecture (e.g. M1 on OSX) you could go via the pip installation (see below), or install via the osx-64 env:
+
+.. code:: bash
+
+    $ CONDA_SUBDIR=osx-64 conda create -c conda-forge -c bioconda -n deeptools deeptools
+
 
 Command line installation using ``pip``
 ---------------------------------------
