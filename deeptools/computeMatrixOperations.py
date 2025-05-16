@@ -6,10 +6,7 @@ import argparse
 import sys
 import os
 import csv
-try:  # keep python 3.7 support.
-    from importlib.metadata import version
-except ModuleNotFoundError:
-    from importlib_metadata import version
+from importlib.metadata import version
 
 
 def parse_arguments():
@@ -549,7 +546,7 @@ def cbindMatrices(hm, args):
         # Add on additional NA initialized columns
         ncol = hm.matrix.matrix.shape[1]
         hm.matrix.matrix = np.hstack((hm.matrix.matrix, np.empty(hm2.matrix.matrix.shape)))
-        hm.matrix.matrix[:, ncol:] = np.NAN
+        hm.matrix.matrix[:, ncol:] = np.nan
 
         # Update the values
         for idx2, group in enumerate(hm2.parameters["group_labels"]):

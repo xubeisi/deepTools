@@ -376,7 +376,7 @@ class heatmapper(object):
 
         # create an empty matrix to store the values
         sub_matrix = np.zeros((len(regions), matrix_cols))
-        sub_matrix[:] = np.NAN
+        sub_matrix[:] = np.nan
 
         j = 0
         sub_regions = []
