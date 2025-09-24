@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-import sys, os, re
+import sys
+import re
 
 import argparse
 import numpy as np
@@ -899,7 +900,7 @@ class Profile(object):
                 repgrp_samp_dict = {}
                 repgrplistuniq = []
                 for tmp in self.repgrplist:
-                    if not tmp in repgrplistuniq:
+                    if tmp not in repgrplistuniq:
                         repgrplistuniq.append(tmp)
 
                 for data_idx in range(nsamptmp):
@@ -944,13 +945,13 @@ class Profile(object):
                     else:
                         _row, _col = data_idx, plot
                     if (
-                        localYMin is None
-                        or self.y_min[col % len(self.y_min)] < localYMin
+                        localYMin is None or
+                        self.y_min[col % len(self.y_min)] < localYMin
                     ):
                         localYMin = self.y_min[col % len(self.y_min)]
                     if (
-                        localYMax is None
-                        or self.y_max[col % len(self.y_max)] > localYMax
+                        localYMax is None or
+                        self.y_max[col % len(self.y_max)] > localYMax
                     ):
                         localYMax = self.y_max[col % len(self.y_max)]
 
@@ -1172,8 +1173,8 @@ def main(args=None):
     hm.read_matrix_file(matrix_file)
 
     if (
-        hm.parameters["min threshold"] is not None
-        or hm.parameters["max threshold"] is not None
+        hm.parameters["min threshold"] is not None or
+        hm.parameters["max threshold"] is not None
     ):
         filterHeatmapValues(
             hm, hm.parameters["min threshold"], hm.parameters["max threshold"]

@@ -190,7 +190,6 @@ def writeCorrected_worker(chrNameBam, chrNameBit, start, end, step):
     ['chr2L\t200\t225\t31.6\n', 'chr2L\t225\t250\t33.8\n', 'chr2L\t250\t275\t37.9\n', 'chr2L\t275\t300\t40.9\n']
     >>> os.remove(tempFile)
     """
-    global R_gc
     fragmentLength = len(R_gc) - 1
 
     cvg_corr = np.zeros(end - start)
@@ -229,10 +228,10 @@ def writeCorrected_worker(chrNameBam, chrNameBit, start, end, step):
 
         # is this read in the same orientation and position as the previous?
         if (
-            r_index > 0
-            and read.pos == reads[r_index - 1].pos
-            and read.is_reverse == reads[r_index - 1].is_reverse
-            and read.pnext == reads[r_index - 1].pnext
+            r_index > 0 and
+            read.pos == reads[r_index - 1].pos and
+            read.is_reverse == reads[r_index - 1].is_reverse and
+            read.pnext == reads[r_index - 1].pnext
         ):
             read_repetitions += 1
             if read_repetitions >= global_vars["max_dup_gc"][gc]:
@@ -278,7 +277,7 @@ def writeCorrected_worker(chrNameBam, chrNameBit, start, end, step):
     _file = open(utilities.getTempFileName(suffix=".bg"), "w")
     # save in bedgraph format
     for bin in range(0, len(cvg_corr), step):
-        value = np.mean(cvg_corr[bin : min(bin + step, end)])
+        value = np.mean(cvg_corr[bin: min(bin + step, end)])
         if value > 0:
             writeStart = start + bin
             writeEnd = min(start + bin + step, end)
@@ -358,7 +357,6 @@ def writeCorrectedSam_worker(
     >>> res = os.remove(tempFile)
     >>> res = os.remove(tempFile+".bai")
     """
-    global R_gc
     fragmentLength = len(R_gc) - 1
 
     if verbose:
@@ -411,11 +409,11 @@ def writeCorrectedSam_worker(
                 copies = 1
         # is this read in the same orientation and position as the previous?
         if (
-            gc
-            and r_index > 0
-            and read.pos == reads[r_index - 1].pos
-            and read.is_reverse == reads[r_index - 1].is_reverse
-            and read.pnext == reads[r_index - 1].pnext
+            gc and
+            r_index > 0 and
+            read.pos == reads[r_index - 1].pos and
+            read.is_reverse == reads[r_index - 1].is_reverse and
+            read.pnext == reads[r_index - 1].pnext
         ):
             read_repetitions += 1
             if read_repetitions >= global_vars["max_dup_gc"][gc]:
@@ -454,10 +452,10 @@ def writeCorrectedSam_worker(
             read.set_tags(readTag)
 
         if (
-            read.is_paired
-            and read.is_proper_pair
-            and not read.mate_is_unmapped
-            and not read.is_reverse
+            read.is_paired and
+            read.is_proper_pair and
+            not read.mate_is_unmapped and
+            not read.is_reverse
         ):
             matePairs[readName] = {"copies": copies, "gc": gc}
 
@@ -767,7 +765,7 @@ class Tester:
 
     def testWriteCorrectedChunk(self):
         """prepare arguments for test"""
-        global R_gc, R_gc_min, R_gc_max
+        global R_gc
         R_gc = np.loadtxt(self.root + "R_gc_paired.txt")
 
         global_vars["max_dup_gc"] = np.ones(301)
@@ -779,7 +777,7 @@ class Tester:
 
     def testWriteCorrectedSam(self):
         """prepare arguments for test"""
-        global R_gc, R_gc_min, R_gc_max
+        global R_gc
         R_gc = np.loadtxt(self.root + "R_gc_paired.txt")
 
         global_vars["max_dup_gc"] = np.ones(301)
@@ -790,12 +788,11 @@ class Tester:
 
     def testWriteCorrectedSam_paired(self):
         """prepare arguments for test."""
-        global R_gc, R_gc_min, R_gc_max
+        global R_gc
         R_gc = np.loadtxt(self.root + "R_gc_paired.txt")
 
         start = 0
         end = 500
-        global global_vars
         global_vars["bam"] = self.root + "paired.bam"
         return "chr2L", "chr2L", start, end
 

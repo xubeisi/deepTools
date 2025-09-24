@@ -212,8 +212,8 @@ def getPositionsToSample(chrom, start, end, stepSize):
         if len(out_match) > 0:
             for intval in out_match:
                 positions_to_sample = positions_to_sample[
-                    (positions_to_sample < intval[0])
-                    | (positions_to_sample >= intval[1])
+                    (positions_to_sample < intval[0]) |
+                    (positions_to_sample >= intval[1])
                 ]
     return positions_to_sample
 
@@ -488,8 +488,6 @@ def tabulateGCcontent(
            [  0.        ,   0.        ,   1.        ],
            [  0.        ,   0.        ,   1.        ]])
     """
-    global global_vars
-
     chrNameBamToBit = dict([(v, k) for k, v in chrNameBitToBam.items()])
     chunkSize = int(min(2e6, 4e5 / global_vars["reads_per_bp"]))
     chromSizes = [(k, v) for k, v in chromSizes if k in list(chrNameBamToBit.keys())]
@@ -550,8 +548,6 @@ def countReadsPerGC(
            [134.        ,   0.43666667],
            [134.        ,   0.44      ]])
     """
-    global global_vars
-
     chrNameBamToBit = dict([(v, k) for k, v in chrNameBitToBam.items()])
     chunkSize = int(min(2e6, 4e5 / global_vars["reads_per_bp"]))
 
@@ -588,7 +584,7 @@ def smooth(x, window_len=3):
         if i < half_width or i + half_width + 1 > len(x):
             continue
         else:
-            y[i] = np.mean(x[i - half_width : i + half_width + 1])
+            y[i] = np.mean(x[i - half_width: i + half_width + 1])
     # clip low values, this avoid problems with zeros
     return y
 
@@ -760,8 +756,8 @@ def plotGCbias(file_name, frequencies, reads_per_gc, region_size, image_format=N
     ax2.set_xlabel("GC fraction")
     ax2.set_ylabel("log2ratio observed/expected")
     ax2.set_xlim(0.2, 0.7)
-    y_max = max(y[np.where(x >= 0.2)[0][0] : np.where(x <= 0.7)[0][-1] + 1])
-    y_min = min(y[np.where(x >= 0.2)[0][0] : np.where(x <= 0.7)[0][-1] + 1])
+    y_max = max(y[np.where(x >= 0.2)[0][0]: np.where(x <= 0.7)[0][-1] + 1])
+    y_min = min(y[np.where(x >= 0.2)[0][0]: np.where(x <= 0.7)[0][-1] + 1])
     if y_max > 0:
         y_max *= 1.1
     else:
@@ -929,15 +925,12 @@ class Tester:
         return (self.chrNameBam, start, end, stepSize, fragmentLength, chrNameBam2bit)
 
     def set_filter_out_file(self):
-        global global_vars
         global_vars["filter_out"] = self.root + "filter_out.bed"
 
     def unset_filter_out_file(self):
-        global global_vars
         global_vars["filter_out"] = None
 
     def set_extra_sampling_file(self):
-        global global_vars
         global_vars["extra_sampling_file"] = self.root + "extra_sampling.bed"
 
     def testTabulateGCcontent(self):

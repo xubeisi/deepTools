@@ -15,7 +15,9 @@ from matplotlib.font_manager import FontProperties
 import matplotlib.gridspec as gridspec
 from matplotlib import ticker
 
-import sys, re, os, copy
+import sys
+import re
+import copy
 import plotly.offline as py
 import plotly.graph_objs as go
 
@@ -423,9 +425,9 @@ def plotlyMatrix(
                 mat = hm.matrix.get_matrix(j, i)
             lengths.append(mat["matrix"].shape[0])
         fractionalHeights = (
-            heatmapHeight
-            * np.cumsum(lengths).astype(float)
-            / np.sum(lengths).astype(float)
+            heatmapHeight *
+            np.cumsum(lengths).astype(float) /
+            np.sum(lengths).astype(float)
         )
         xDomain = [xBase, xBase + heatmapWidth]
         fig["layout"]["xaxis{}".format(xAxisN)] = dict(
@@ -739,20 +741,19 @@ def plotMatrix(
                         _len = sum([x[1] - x[0] for x in ind_reg[1]])
                     if hm.parameters["ref point"][idx] == "TSS":
                         _reg_len.append(
-                            (hm.parameters["upstream"][idx] + _len)
-                            / hm.parameters["bin size"][idx]
+                            (hm.parameters["upstream"][idx] + _len) /
+                            hm.parameters["bin size"][idx]
                         )
                     elif hm.parameters["ref point"][idx] == "center":
                         _len *= 0.5
                         _reg_len.append(
-                            (hm.parameters["upstream"][idx] + _len)
-                            / hm.parameters["bin size"][idx]
+                            (hm.parameters["upstream"][idx] + _len) /
+                            hm.parameters["bin size"][idx]
                         )
                     elif hm.parameters["ref point"][idx] == "TES":
                         _reg_len.append(
-                            (hm.parameters["upstream"][idx] - _len)
-                            / hm.parameters["bin size"][idx]
-                        )
+                            (hm.parameters["upstream"][idx] - _len) /
+                            hm.parameters["bin size"][idx])
                 foo.append(_reg_len)
             regions_length_in_bins[idx] = foo
 
@@ -1048,8 +1049,8 @@ def main(args=None):
     hm.read_matrix_file(matrix_file)
 
     if (
-        hm.parameters["min threshold"] is not None
-        or hm.parameters["max threshold"] is not None
+        hm.parameters["min threshold"] is not None or
+        hm.parameters["max threshold"] is not None
     ):
         filterHeatmapValues(
             hm, hm.parameters["min threshold"], hm.parameters["max threshold"]

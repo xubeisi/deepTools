@@ -1309,7 +1309,7 @@ class _matrix(object):
         cluster_number = 1
         for cluster in cluster_order:
             cluster_ids = _cluster_ids_list[cluster]
-            self.group_labels.append("cluster_{}_n{}".format(cluster_number,len(cluster_ids)))
+            self.group_labels.append("cluster_{}_n{}".format(cluster_number, len(cluster_ids)))
             cluster_number += 1
             self.group_boundaries.append(self.group_boundaries[-1] +
                                          len(cluster_ids))
