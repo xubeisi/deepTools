@@ -30,8 +30,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from matplotlib import colors, colormaps as mpl_cm
-
+from matplotlib import colors
 
 _rocket_lut = [
     [0.01060815, 0.01808215, 0.10018654],
@@ -1076,6 +1075,15 @@ _icefire_lut = [
 _luts = [_rocket_lut, _mako_lut, _vlag_lut, _icefire_lut]
 _names = ["rocket", "mako", "vlag", "icefire"]
 
+def mycmregister(name,cmap):
+    import matplotlib
+    if hasattr(matplotlib.cm, 'register_cmap'):
+        matplotlib.cm.register_cmap(name, cmap)
+    elif hasattr(matplotlib.colors, 'register_cmap'):
+        matplotlib.colors.register_cmap(name, cmap)
+    else:
+        matplotlib.colormaps.register(cmap, name=name)
+
 for _lut, _name in zip(_luts, _names):
 
     _cmap = colors.ListedColormap(_lut, _name)
@@ -1084,5 +1092,5 @@ for _lut, _name in zip(_luts, _names):
     _cmap_r = colors.ListedColormap(_lut[::-1], _name + "_r")
     locals()[_name + "_r"] = _cmap_r
 
-    mpl_cm.register(_cmap, name=_name)
-    mpl_cm.register(_cmap_r, name=_name + "_r")
+    mycmregister(_name, _cmap)
+    mycmregister(_name + "_r", _cmap_r)
